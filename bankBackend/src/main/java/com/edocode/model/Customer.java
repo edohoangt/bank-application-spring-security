@@ -1,5 +1,8 @@
 package com.edocode.model;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,16 +10,32 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Customer {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name = "native", strategy = "native")
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
+    @GenericGenerator(name = "native",strategy = "native")
+    @Column(name = "customer_id")
     private int id;
+
+    private String name;
+
     private String email;
+
+    @Column(name = "mobile_number")
+    private String mobileNumber;
+
+//    @JsonIgnore
+    @Column
     private String pwd;
+
     private String role;
+
+    @Column(name = "create_dt")
+    private Date createDt;
 
     public int getId() {
         return id;
@@ -26,12 +45,28 @@ public class Customer {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
     public String getPwd() {
@@ -49,5 +84,12 @@ public class Customer {
     public void setRole(String role) {
         this.role = role;
     }
-	
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
 }
