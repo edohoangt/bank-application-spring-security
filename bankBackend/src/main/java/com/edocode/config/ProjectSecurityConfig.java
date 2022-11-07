@@ -4,16 +4,20 @@ import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.aspectj.weaver.ast.And;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import com.edocode.filter.AuthoritiesLoggingAfterFilter;
+import com.edocode.filter.AuthoritiesLoggingAtFilter;
+import com.edocode.filter.RequestValidationBeforeFilter;
 
 @Configuration
 public class ProjectSecurityConfig {
@@ -37,7 +41,10 @@ public class ProjectSecurityConfig {
 		.and()
 			.csrf().ignoringAntMatchers("/contact", "/register").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		.and()
-			.authorizeHttpRequests()
+			.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+			.addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+			.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+		.authorizeHttpRequests()
 			.antMatchers("/myAccount").hasRole("USER")
             .antMatchers("/myBalance").hasAnyRole("USER","ADMIN")
             .antMatchers("/myLoans").hasRole("USER")
