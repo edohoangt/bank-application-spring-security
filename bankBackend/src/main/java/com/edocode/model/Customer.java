@@ -1,16 +1,21 @@
 package com.edocode.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class Customer {
@@ -28,7 +33,7 @@ public class Customer {
     @Column(name = "mobile_number")
     private String mobileNumber;
 
-//    @JsonIgnore
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Column
     private String pwd;
 
@@ -36,6 +41,10 @@ public class Customer {
 
     @Column(name = "create_dt")
     private Date createDt;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    private Set<Authority> authorities;
 
     public int getId() {
         return id;
@@ -92,4 +101,13 @@ public class Customer {
     public void setCreateDt(Date createDt) {
         this.createDt = createDt;
     }
+
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+    
 }
