@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: admin
-    password: bank-springsecurity
-    url: jdbc:mysql://bank-springsecurity.c5ghtptceuwm.us-east-1.rds.amazonaws.com/eazybank 
+    username: # db's username
+    password: # db's password
+    url: # db's connection endpoint
 
   jpa:
     show-sql: true
