@@ -1,10 +1,16 @@
 spring:
   datasource:
-    username: # db's username
-    password: # db's password
-    url: # db's connection endpoint
+    username: admin
+    password: bank-springsecurity
+    url: jdbc:mysql://bank-springsecurity.c5ghtptceuwm.us-east-1.rds.amazonaws.com/eazybank 
 
   jpa:
     show-sql: true
     properties:
       hibernate.format_sql: true
+      
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8180/realms/eazybankdev/protocol/openid-connect/certs
